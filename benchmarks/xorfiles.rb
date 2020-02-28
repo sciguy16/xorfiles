@@ -15,11 +15,13 @@ f2desc = IO.sysopen(file2)
 f1 = IO.new(f1desc, 'r')
 f2 = IO.new(f2desc, 'r')
 
+BUFSIZE = 2048
+
 begin
   while true do
-    print f1.readpartial(2048).bytes
-      .zip(f2.readpartial(2048).bytes)
-      .select{ |x, y| !(x.nil? || y.nil?)}
+    buf2 = f2.readpartial(BUFSIZE).bytes
+    print f1.readpartial([buf2.length, BUFSIZE].min).bytes
+      .zip(buf2)
       .map { |x, y| x ^ y }
       .map(&:chr)
       .join("")

@@ -32,5 +32,5 @@ The following command was used to measure the throughput:
 | Implementation | Approx. throughput |
 |:--------------:|:------------------:|
 | Rust           | 6.5 MiB/s          |
-| Ruby           | 1.9 MiB/s          |
+| Ruby           | 2.45 MiB/s          |
 | Python         | 4.7 MiB/s          |
