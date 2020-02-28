@@ -7,13 +7,26 @@ end
 
 file1, file2, *_ = ARGV
 
-File.open(file1, 'r') do |f1|
-  File.open(file2, 'r') do |f2|
-    puts f1.each_byte
-      .zip(f2.each_byte)
+# Get file descriptors for the files
+f1desc = IO.sysopen(file1)
+f2desc = IO.sysopen(file2)
+
+# Open IO streams for the files
+f1 = IO.new(f1desc, 'r')
+f2 = IO.new(f2desc, 'r')
+
+begin
+  while true do
+    print f1.readpartial(100).bytes
+      .zip(f2.readpartial(100).bytes)
       .select{ |x, y| !(x.nil? || y.nil?)}
       .map { |x, y| x ^ y }
       .map(&:chr)
       .join("")
   end
+rescue EOFError
 end
+
+# Close the file descriptors
+f1.close
+f2.close
