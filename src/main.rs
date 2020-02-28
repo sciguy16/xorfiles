@@ -37,7 +37,7 @@ struct Opts {
     /// Second file
     #[structopt(name = "FILE2")]
     #[structopt(parse(from_os_str))]
-    file2: Option<PathBuf>,
+    file2: PathBuf,
 
     // /// Optionally loop the shorter file around until the longer file
     // /// runs out
@@ -58,18 +58,15 @@ fn main() -> io::Result<()> {
 
     let f1 = File::open(opts.file1)?;
     //let f1meta = f1.metadata()?;
-    let mut buf1 = f1.bytes();
+    let buf1 = f1.bytes();
 
-    let f2;
-    let buf2 = if let Some(file2) = opts.file2 {
-        f2 = File::open(file2)?;
-        Some(f2.bytes())
-    } else {
-        None
-    };
+    let f2 = File::open(opts.file2)?;
+    let buf2 = f2.bytes();
 
-    let mut buf2 = buf2.unwrap();
-
+    for pair in buf1.zip(buf2).map(|p| (p.0.unwrap(), p.1.unwrap())) {
+        io::stdout().write(&[pair.0 ^ pair.1])?;
+    }
+    /*
     loop {
         let b1 = buf1.next();
         let b2 = buf2.next();
@@ -90,7 +87,7 @@ fn main() -> io::Result<()> {
         }
 
     }
-
+*/
     io::stdout().flush()?;
 
     Ok(())
