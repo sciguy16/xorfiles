@@ -5,6 +5,11 @@ CTF challenge.
 ## Usage
 `./xorfiles FILE1 FILE2`
 
+## Features
+* XOR two files: `xorfiles FILE1 FILE2`
+* XOR one file with stdin: `xorfiles FILE1 < FILE2`
+* High throughput compared to Python and Ruby implementations
+
 ## Installation
 ```
 git clone https://github.com/sciguy16/xorfiles
@@ -18,7 +23,8 @@ cargo run --release -- -h
 * Limit the number of bytes read/written
 * Output to file
 * Hexdump on the input and output stages
-* Benchmark against C/Python implementations
+* Benchmark against C implementations
+* Optimise the Ruby and Python benchmarks further for better competition
 
 ## Benchmarks
 Benchmarks run with a 1 GB file XORed with itself, generated with
