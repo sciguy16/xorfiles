@@ -18,14 +18,12 @@
  *
  */
 
-
 use structopt::StructOpt;
-//use std::io::stdin;
-use std::io;
 use std::fs::File;
-use std::path::PathBuf;
+use std::io;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::path::PathBuf;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "xorfiles", about = "XOR two files together")]
@@ -72,35 +70,15 @@ fn main() -> io::Result<()> {
     } else {
         // File-and-stdin mode, so XOR the file with stdin
         for pair in BufReader::new(io::stdin())
-                .bytes()
-                .zip(buf1)
-                .map(|p| (p.0.unwrap(), p.1.unwrap())) {
+            .bytes()
+            .zip(buf1)
+            .map(|p| (p.0.unwrap(), p.1.unwrap()))
+        {
             io::stdout().write(&[pair.0 ^ pair.1])?;
         }
     }
-    /*
-       loop {
-       let b1 = buf1.next();
-       let b2 = buf2.next();
-//eprintln!("Loop: ({:?}, {:?})", b1, b2);
-match (b1, b2) {
-(Some(Ok(a)), Some(Ok(b))) => {
-io::stdout().write(&[a ^ b])?;
-//eprint!("=");
-},
-(None, None) => {
-//eprintln!("The end :(");
-break;
-},
-_x => {
-    //eprintln!("End: {:?}", x);
-    break;
-    },
-    }
 
-    }
-    */
-io::stdout().flush()?;
+    io::stdout().flush()?;
 
-Ok(())
-    }
+    Ok(())
+}
