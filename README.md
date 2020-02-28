@@ -23,6 +23,7 @@ cargo run --release -- -h
 ```
 cargo install xorfiles
 ```
+Updates are handled by [`cargo install-update xorfiles`](https://github.com/nabijaczleweli/cargo-update).
 
 ## Roadmap/Todo
 * Optionally loop the shorter file (like a multi-byte XOR)
