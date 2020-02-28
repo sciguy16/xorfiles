@@ -25,7 +25,6 @@ cargo install xorfiles
 ```
 
 ## Roadmap/Todo
-* XOR file with stdin
 * Optionally loop the shorter file (like a multi-byte XOR)
 * Limit the number of bytes read/written
 * Output to file
