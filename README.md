@@ -11,10 +11,17 @@ CTF challenge.
 * High throughput compared to Python and Ruby implementations
 
 ## Installation
+
+### From Github
 ```
 git clone https://github.com/sciguy16/xorfiles
 cargo build --release
 cargo run --release -- -h
+```
+
+### From Crates.io
+```
+cargo install xorfiles
 ```
 
 ## Roadmap/Todo
