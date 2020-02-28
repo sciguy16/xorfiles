@@ -25,6 +25,7 @@ use std::io;
 use std::fs::File;
 use std::path::PathBuf;
 use std::io::prelude::*;
+use std::io::BufReader;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "xorfiles", about = "XOR two files together")]
@@ -58,10 +59,10 @@ fn main() -> io::Result<()> {
 
     let f1 = File::open(opts.file1)?;
     //let f1meta = f1.metadata()?;
-    let buf1 = f1.bytes();
+    let buf1 = BufReader::new(f1).bytes();
 
     let f2 = File::open(opts.file2)?;
-    let buf2 = f2.bytes();
+    let buf2 = BufReader::new(f2).bytes();
 
     for pair in buf1.zip(buf2).map(|p| (p.0.unwrap(), p.1.unwrap())) {
         io::stdout().write(&[pair.0 ^ pair.1])?;
