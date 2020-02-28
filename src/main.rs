@@ -38,7 +38,7 @@ struct Opts {
     /// Second file
     #[structopt(name = "FILE2")]
     #[structopt(parse(from_os_str))]
-    file2: PathBuf,
+    file2: Option<PathBuf>,
 
     // /// Optionally loop the shorter file around until the longer file
     // /// runs out
@@ -61,35 +61,46 @@ fn main() -> io::Result<()> {
     //let f1meta = f1.metadata()?;
     let buf1 = BufReader::new(f1).bytes();
 
-    let f2 = File::open(opts.file2)?;
-    let buf2 = BufReader::new(f2).bytes();
+    if let Some(file2) = opts.file2 {
+        // If we are in two-file mode then XOR the two files
+        let f2 = File::open(file2)?;
+        let buf2 = BufReader::new(f2).bytes();
 
-    for pair in buf1.zip(buf2).map(|p| (p.0.unwrap(), p.1.unwrap())) {
-        io::stdout().write(&[pair.0 ^ pair.1])?;
+        for pair in buf1.zip(buf2).map(|p| (p.0.unwrap(), p.1.unwrap())) {
+            io::stdout().write(&[pair.0 ^ pair.1])?;
+        }
+    } else {
+        // File-and-stdin mode, so XOR the file with stdin
+        for pair in BufReader::new(io::stdin())
+                .bytes()
+                .zip(buf1)
+                .map(|p| (p.0.unwrap(), p.1.unwrap())) {
+            io::stdout().write(&[pair.0 ^ pair.1])?;
+        }
     }
     /*
-    loop {
-        let b1 = buf1.next();
-        let b2 = buf2.next();
-        //eprintln!("Loop: ({:?}, {:?})", b1, b2);
-        match (b1, b2) {
-            (Some(Ok(a)), Some(Ok(b))) => {
-                io::stdout().write(&[a ^ b])?;
-                //eprint!("=");
-            },
-            (None, None) => {
-                //eprintln!("The end :(");
-                break;
-            },
-            _x => {
-                //eprintln!("End: {:?}", x);
-                break;
-            },
-        }
+       loop {
+       let b1 = buf1.next();
+       let b2 = buf2.next();
+//eprintln!("Loop: ({:?}, {:?})", b1, b2);
+match (b1, b2) {
+(Some(Ok(a)), Some(Ok(b))) => {
+io::stdout().write(&[a ^ b])?;
+//eprint!("=");
+},
+(None, None) => {
+//eprintln!("The end :(");
+break;
+},
+_x => {
+    //eprintln!("End: {:?}", x);
+    break;
+    },
+    }
 
     }
-*/
-    io::stdout().flush()?;
+    */
+io::stdout().flush()?;
 
-    Ok(())
-}
+Ok(())
+    }

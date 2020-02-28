@@ -22,7 +22,9 @@ cargo run --release -- -h
 
 ## Benchmarks
 Benchmarks run with a 1 GB file XORed with itself, generated with
-`dd if=/dev/zero of=big_file bs=1M count=1000`.
+`dd if=/dev/zero of=big_file bs=1M count=1000`. The Rust version was
+tested in two operating modes: XOR two files together and one file with
+ stdin.
 
 The following command was used to measure the throughput:
 ```
@@ -31,6 +33,7 @@ The following command was used to measure the throughput:
 
 | Implementation | Approx. throughput |
 |:--------------:|:------------------:|
-| Rust           | 6.5 MiB/s          |
-| Ruby           | 2.45 MiB/s          |
+| Rust (files)   | 6.5 MiB/s          |
+| Rust (stdin)   | 6.4 MiB/s          |
+| Ruby           | 2.45 MiB/s         |
 | Python         | 4.7 MiB/s          |
