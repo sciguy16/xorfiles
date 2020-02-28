@@ -17,8 +17,8 @@ f2 = IO.new(f2desc, 'r')
 
 begin
   while true do
-    print f1.readpartial(100).bytes
-      .zip(f2.readpartial(100).bytes)
+    print f1.readpartial(2048).bytes
+      .zip(f2.readpartial(2048).bytes)
       .select{ |x, y| !(x.nil? || y.nil?)}
       .map { |x, y| x ^ y }
       .map(&:chr)

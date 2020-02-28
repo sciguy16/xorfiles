@@ -32,4 +32,4 @@ The following command was used to measure the throughput:
 | Implementation | Approx. throughput |
 |:--------------:|:------------------:|
 | Rust           | 6.5 MiB/s          |
-| Ruby           | 1.8 MiB/s          |
+| Ruby           | 1.9 MiB/s          |
