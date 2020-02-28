@@ -18,4 +18,18 @@ cargo run --release -- -h
 * Limit the number of bytes read/written
 * Output to file
 * Hexdump on the input and output stages
-* Benchmark against Ruby/C/Python implementations
+* Benchmark against C/Python implementations
+
+## Benchmarks
+Benchmarks run with a 1 GB file XORed with itself, generated with
+`dd if=/dev/zero of=big_file bs=1M count=1000`.
+
+The following command was used to measure the throughput:
+```
+<implementation> big_file big_file | pv > /dev/null
+```
+
+| Implementation | Approx. throughput |
+|:--------------:|:------------------:|
+| Rust           | 980 kiB/s          |
+| Ruby           | 1.8 MiB/s          |
